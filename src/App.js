@@ -1,22 +1,32 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps"
-
-const MyMapComponent = withScriptjs(withGoogleMap((props) => (
-    <GoogleMap
-        defaultZoom={8}
-        defaultCenter={{lat: -34.397, lng: 150.644}}
-    >
-        {props.isMarkerShown && <Marker position={{lat: -34.397, lng: 150.644}}/>}
-    </GoogleMap>)));
+import MapComponent from './components/map/map-component';
 
 class App extends Component {
 
+    state = {
+        locations: []
+    };
+
+    /**
+     *
+     * @param props
+     */
+    constructor(props) {
+        super(props);
+        this._doSearch = this._doSearch.bind(this);
+    }
+
+    /**
+     *
+     * @private
+     */
     _doSearch() {
-        fetch('http://localhost:3001/?term=Carlsbad&pretty=1&radius=10')
-            .then(res => {
-                console.log(res);
+        fetch('http://localhost:3000/?id=5334223')
+            .then(res => res.json())
+            .then(locs => {
+                this.setState({
+                    locations: locs
+                });
             });
     }
 
@@ -26,18 +36,11 @@ class App extends Component {
      */
     render() {
         return (
-            <div className="App">
+            <div>
 
                 <input type='text' id='search'/>
                 <button onClick={this._doSearch}>Search</button>
-                <MyMapComponent
-
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div style={{ height: `100%` }} />}
-                    containerElement={<div style={{ height: `400px` }} />}
-                    mapElement={<div style={{ height: `100%` }} />}
-
-                    isMarkerShown/>// Map with a Marker
+                <MapComponent locations={this.state.locations}/>
 
             </div>
         );
