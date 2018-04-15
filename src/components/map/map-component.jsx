@@ -1,58 +1,66 @@
-import React, {Component} from 'react';
-import {compose, withProps} from "recompose"
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps"
+import React from 'react';
 
-const MyMapComponent = withScriptjs(withGoogleMap((props) => {
+const {compose, withProps, lifecycle} = require("recompose");
+const {
+    withScriptjs,
+    withGoogleMap,
+    GoogleMap,
+    Marker,
+} = require("react-google-maps");
 
-    const markers = props.locations.map(loc => {
+const API_KEY = 'AIzaSyA192RpHke8TJV1t7-4U4VV0pz36y9wBzo';
+const defaultCenter = { // Portland
+    lat: 45.5231,
+    lng: -122.6765
+};
+
+const MapComponent = compose(
+    withProps({
+        googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&v=3.exp&libraries=geometry,drawing,places`,
+        loadingElement: <div style={{height: `100%`}}/>,
+        containerElement: <div style={{height: `100%`, display: `flex`, flex: 1}}/>,
+        mapElement: <div style={{height: `100%`, display: `flex`, flex: 1}}/>,
+    }),
+    lifecycle({
+        componentWillMount() {
+            const star = 'bar';
+        }
+    }),
+    withScriptjs,
+    withGoogleMap
+)(props => {
+
+    const markers = props.nearbyLocations.map((loc, index) => {
         const coord = loc.coord;
-        return <Marker position={{lat: coord.latitude, lng: coord.longitude}}/>
+        return <Marker key={index} position={{lat: coord.latitude, lng: coord.longitude}}/>
     });
+
+    let options = {
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: window.google.maps.ControlPosition.LEFT_BOTTOM
+        },
+        zoom: 10
+    };
+
+    const center = 'location' in props && props.location ? {
+        lat: props.location.coord.latitude,
+        lng: props.location.coord.longitude
+    } : null;
+
+    if (center) {
+        options.center = center;
+    }
 
     return (
         <GoogleMap
-            defaultZoom={8}
-            defaultCenter={{lat: -34.397, lng: 150.644}}
+            defaultCenter={defaultCenter}
+            options={options}
         >
             {markers}
-        </GoogleMap>)
-}));
-
-class MapComponent extends Component {
-
-    /**
-     *
-     * @param props
-     */
-    constructor(props) {
-        super(props);
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    render() {
-
-        // const markers = props.locations.map(loc => {
-        //
-        // });
-
-        const chuck = 'wagon';
-
-        return (
-
-            <MyMapComponent
-
-                googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div style={{height: `100%`}}/>}
-                containerElement={<div style={{height: `700px`}}/>}
-                mapElement={<div style={{height: `100%`}}/>}
-                locations={this.props.locations}
-
-            />
-        );
-    }
-}
+        </GoogleMap>
+    )
+});
 
 export default MapComponent;

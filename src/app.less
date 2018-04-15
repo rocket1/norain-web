@@ -1,0 +1,32 @@
+.app {
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+
+  .search-box {
+
+    display: flex;
+    position: absolute;
+    margin: 12px;
+    padding: 12px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+
+    .search {
+
+      @h: 30px;
+
+      input {
+        margin-right: 12px;
+        width: 400px;
+        height: @h;
+      }
+
+      button {
+        height: @h;
+      }
+    }
+  }
+}
