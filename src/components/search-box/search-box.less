@@ -1,0 +1,55 @@
+.search-box {
+
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin: 12px;
+  padding: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+
+  .search {
+
+    @h: 30px;
+
+    input {
+      margin-right: 12px;
+      height: @h;
+
+      &.term {
+        width: 400px;
+      }
+
+      &.radius {
+        width: 50px;
+      }
+    }
+
+    button {
+      height: @h;
+    }
+  }
+
+  .advanced {
+    display: flex;
+    padding-top: 12px;
+  }
+
+  .label-grp {
+
+    display: flex;
+    align-items: center;
+
+    @marg: 6px;
+
+    .label {
+      margin-right: @marg;
+      font-size: .8rem;
+    }
+
+    input.radius {
+      margin-right: @marg;
+      width: 50px;
+    }
+  }
+}

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import MapComponent from './components/map/map-component';
+import SearchBox from './components/search-box/search-box';
+
 import './app.css';
 
 class App extends Component {
@@ -15,19 +17,16 @@ class App extends Component {
      */
     constructor(props) {
         super(props);
-        this._doSearch = this._doSearch.bind(this);
+        this._handleLocationChange = this._handleLocationChange.bind(this);
     }
 
     /**
      *
+     * @param location
      * @private
      */
-    _doSearch() {
-        fetch('http://localhost:3000/?id=5334223')
-            .then(resRaw => resRaw.json())
-            .then(res => {
-                this.setState(res);
-            });
+    _handleLocationChange(location) {
+        this.setState(location);
     }
 
     /**
@@ -37,15 +36,8 @@ class App extends Component {
     render() {
         return (
             <div className="app">
-
                 <MapComponent location={this.state.location} nearbyLocations={this.state.nearbyLocations}/>
-
-                <div className="search-box">
-                    <div className="search">
-                        <input type='text' id='search'/>
-                        <button onClick={this._doSearch}>Search</button>
-                    </div>
-                </div>
+                <SearchBox onLocationChange={this._handleLocationChange}/>
             </div>
         );
     }

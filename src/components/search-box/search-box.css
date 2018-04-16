@@ -1,0 +1,38 @@
+.search-box {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin: 12px;
+  padding: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px -1px;
+}
+.search-box .search input {
+  margin-right: 12px;
+  height: 30px;
+}
+.search-box .search input.term {
+  width: 400px;
+}
+.search-box .search input.radius {
+  width: 50px;
+}
+.search-box .search button {
+  height: 30px;
+}
+.search-box .advanced {
+  display: flex;
+  padding-top: 12px;
+}
+.search-box .label-grp {
+  display: flex;
+  align-items: center;
+}
+.search-box .label-grp .label {
+  margin-right: 6px;
+  font-size: .8rem;
+}
+.search-box .label-grp input.radius {
+  margin-right: 6px;
+  width: 50px;
+}

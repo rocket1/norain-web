@@ -1,11 +1,9 @@
 .app {
-
   display: flex;
   flex-direction: column;
   height: 100%;
   position: relative;
-
-  *:focus {
-    outline-color: orange;
-  }
+}
+.app *:focus {
+  outline-color: orange;
 }
