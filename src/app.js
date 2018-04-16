@@ -18,6 +18,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this._handleLocationChange = this._handleLocationChange.bind(this);
+        this._handleSearch = this._handleSearch.bind(this);
     }
 
     /**
@@ -31,13 +32,38 @@ class App extends Component {
 
     /**
      *
+     * @private
+     */
+    _handleSearch(searchState) {
+
+        const term = searchState.term;
+        const radius = searchState.radius;
+
+        function handleErrors(response) {
+            if (response.error) {
+                throw Error(response.error);
+            }
+            return response;
+        }
+
+        fetch(`http://localhost:3000/?term=${term}&radius=${radius}`)
+            .then(resRaw => resRaw.json())
+            .then(handleErrors)
+            .then(this._handleLocationChange)
+            .catch(reason => {
+                alert(reason.message);
+            });
+    }
+
+    /**
+     *
      * @returns {*}
      */
     render() {
         return (
             <div className="app">
                 <MapComponent location={this.state.location} nearbyLocations={this.state.nearbyLocations}/>
-                <SearchBox onLocationChange={this._handleLocationChange}/>
+                <SearchBox onSearch={this._handleSearch} onLocationChange={this._handleLocationChange}/>
             </div>
         );
     }
