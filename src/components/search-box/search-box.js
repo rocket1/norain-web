@@ -69,19 +69,20 @@ class SearchBox extends Component {
                 <form onSubmit={this._handleSearch}>
                     <div className="search">
                         <input
+                            disabled={this.props.searchInProgress}
                             className="term"
                             ref={input => this.nameInput = input}
                             placeholder="Enter a City, Address, etc." type='text' id='search'
                             onChange={this._handleTermChange}
                         />
-                        <button onClick={this._handleSearch}>Find Sunshine</button>
+                        <button disabled={this.props.searchInProgress} onClick={this._handleSearch}>{this.props.searchInProgress ? 'Searching...' : 'Find Sunshine'}</button>
                     </div>
                     <div className="advanced">
                         <div className="label-grp">
                             <div className="label">within</div>
-                            <input type="number" className="radius" value={this.state.radius}
+                            <input disabled={this.props.searchInProgress} type="number" className="radius" value={this.state.radius}
                                    onChange={this._handleRadiusChange}/>
-                            <select name="units">
+                            <select disabled={this.props.searchInProgress} name="units">
                                 <option>miles</option>
                                 <option>kilometers</option>
                             </select>

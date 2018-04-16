@@ -8,7 +8,8 @@ class App extends Component {
 
     state = {
         location: null,
-        nearbyLocations: []
+        nearbyLocations: [],
+        searchInProgress: false
     };
 
     /**
@@ -46,12 +47,17 @@ class App extends Component {
             return response;
         }
 
+        this.setState({searchInProgress: true});
+
         fetch(`http://localhost:3000/?term=${term}&radius=${radius}`)
             .then(resRaw => resRaw.json())
             .then(handleErrors)
             .then(this._handleLocationChange)
             .catch(reason => {
                 alert(reason.message);
+            })
+            .finally(() => {
+                this.setState({searchInProgress: false})
             });
     }
 
@@ -63,7 +69,8 @@ class App extends Component {
         return (
             <div className="app">
                 <MapComponent location={this.state.location} nearbyLocations={this.state.nearbyLocations}/>
-                <SearchBox onSearch={this._handleSearch} onLocationChange={this._handleLocationChange}/>
+                <SearchBox searchInProgress={this.state.searchInProgress} onSearch={this._handleSearch}
+                           onLocationChange={this._handleLocationChange}/>
             </div>
         );
     }
